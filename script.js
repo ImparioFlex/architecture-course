@@ -580,7 +580,7 @@ const flatLessons = courses.flatMap((module) =>
 let selectedDepth = 1;
 let selectedLessonIndex = 0;
 let pinnedTerm = null;
-const completedLessons = new Set();
+const completedLessons = new Set(JSON.parse(localStorage.getItem("arch-completed") || "[]"));
 let mermaidView = "diagram";
 
 const navEl = document.getElementById("module-nav");
@@ -895,6 +895,7 @@ nextLessonButton.addEventListener("click", () => {
 
 completeLessonButton.addEventListener("click", () => {
   completedLessons.add(flatLessons[selectedLessonIndex].id);
+  localStorage.setItem("arch-completed", JSON.stringify([...completedLessons]));
   render();
 });
 
