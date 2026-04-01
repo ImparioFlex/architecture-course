@@ -11,6 +11,18 @@ const glossary = {
     short: "A defined way for systems to exchange data or actions.",
     full: "An API is a contract that lets one system ask another for data or work without needing to know its internal implementation.",
   },
+  sdk: {
+    short: "A code library that makes working with a system or API easier.",
+    full: "An SDK is a software development kit: a packaged set of code, helpers, and documentation that wraps lower-level operations so developers can integrate faster.",
+  },
+  cli: {
+    short: "A command-line interface used from the terminal.",
+    full: "A CLI is a text-based interface for running commands, scripts, and tools directly from the terminal instead of through a graphical UI.",
+  },
+  mcp: {
+    short: "A standard way for AI assistants to connect to tools and external context.",
+    full: "MCP, or Model Context Protocol, is a structured way to expose tools, resources, and context to an AI assistant so it can use them safely and consistently.",
+  },
   database: {
     short: "A system for storing and retrieving structured data.",
     full: "A database keeps persistent information such as users, orders, settings, and records that the app can query and update.",
@@ -270,6 +282,82 @@ const courses = [
           options: ["A component's local state", "The database", "A hover tooltip"],
           correct: 1,
           explanation: "Order history needs durable storage and should be treated as a persistent record.",
+        },
+      },
+      {
+        id: "system-interfaces",
+        title: "API vs SDK vs CLI vs MCP",
+        summary: "Learn four common access patterns so tool and workflow terminology stops blurring together.",
+        depth: {
+          1: {
+            core: [
+              "These terms all describe ways of interacting with systems, but they are not interchangeable. An {api} is a contract, an {sdk} is a helper toolkit, a {cli} is a terminal interface, and an {mcp} server exposes tools and context to AI assistants.",
+              "The easiest way to think about them is: same underlying capability, different access layer.",
+            ],
+            analogy:
+              "Imagine a restaurant. The kitchen's rules for taking orders are the {api}. The waiter training manual and tools are the {sdk}. The call-in order line is the {cli}. A dedicated concierge channel for an AI assistant would be the {mcp} connection.",
+            takeaway:
+              "When choosing a workflow, ask not just what a system can do, but how you are supposed to access it.",
+          },
+          2: {
+            core: [
+              "An {api} usually exposes endpoints or functions. An {sdk} wraps that API in a language-specific package. A {cli} lets humans or scripts invoke actions from the terminal. An {mcp} layer gives AI tools a standardized way to discover and call capabilities.",
+              "One product can offer all four at once. For example, a platform may have a REST API, a JavaScript SDK, a CLI, and an MCP server or connector.",
+            ],
+            analogy:
+              "It is like one business offering a printed form, an online portal, a phone hotline, and a dedicated partner desk. The service is similar; the interaction mode changes.",
+            takeaway:
+              "A lot of setup confusion comes from mixing the capability itself with the interface used to reach it.",
+          },
+          3: {
+            core: [
+              "Architecturally, these are interface layers around a system. APIs are usually the fundamental machine-to-machine contract. SDKs optimize developer ergonomics. CLIs optimize direct operator workflow and scripting. MCP optimizes AI-agent interoperability.",
+              "That means your decision is often about who the caller is: application code, human operator, automation script, or AI assistant.",
+            ],
+            analogy:
+              "The same warehouse can support trucks, customer pickup, internal staff, and partner deliveries, but each path needs a different loading dock.",
+            takeaway:
+              "The deeper skill is recognizing which interface best fits the user of the system, because that shapes reliability, speed, and maintainability.",
+          },
+        },
+        diagram: {
+          type: "compare",
+          classic: [
+            "API",
+            "Machine-to-machine contract",
+            "Raw capability surface",
+            "Often the base layer",
+          ],
+          ai: [
+            "SDK / CLI / MCP",
+            "Different ways to access the same capability",
+            "Developer, operator, or AI-friendly wrapper",
+            "Chosen based on who is calling",
+          ],
+        },
+        beforeAI:
+          "Before AI agents became common, most teams mostly thought in terms of APIs, SDKs, and CLIs.",
+        withAI:
+          "MCP adds another access layer: a standardized way for AI assistants to discover tools, resources, and actions without each integration being custom-wired from scratch.",
+        stillHard:
+          "The existence of multiple interfaces does not remove the need to understand the underlying system. A clean wrapper still depends on a clear source of truth and good contracts underneath.",
+        caseStudy:
+          "A payments platform might expose an {api} for raw operations, an {sdk} for app developers, a {cli} for admin tasks or local testing, and an {mcp} integration so an AI assistant can inspect docs or call approved tools.",
+        terms: ["api", "sdk", "cli", "mcp", "backend"],
+        mermaid: `flowchart TD
+  System[Underlying System] --> API[API]
+  API --> SDK[SDK]
+  API --> CLI[CLI]
+  API --> MCP[MCP Server]
+  SDK --> AppCode[Application Code]
+  CLI --> Operator[Human or Script]
+  MCP --> Agent[AI Assistant]`,
+        quiz: {
+          question: "If the same system exposes a terminal tool for humans and scripts, what is that interface usually called?",
+          options: ["SDK", "CLI", "Database row"],
+          correct: 1,
+          explanation:
+            "A CLI is the terminal-facing interface. It is distinct from an SDK, which is meant to be used from application code.",
         },
       },
       {
